@@ -1,3 +1,7 @@
+using MediatR;
+using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
+using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMediatR(typeof(GetAllFlightsQuery).Assembly);
+builder.Services.AddMediatR(typeof(GetAllHotelsQuery).Assembly);
 
 var app = builder.Build();
 
