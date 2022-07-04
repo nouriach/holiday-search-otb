@@ -1,13 +1,12 @@
 ﻿using MediatR;
 using Moq;
+using OTB.HolidaySearch.Web.Applications.Mediator.Flight.Queries;
+using OTB.HolidaySearch.Web.Applications.Mediator.Flight.Responses;
 using OTB.HolidaySearch.Web.Applications.Mediator.HolidaySearch.Handlers;
 using OTB.HolidaySearch.Web.Applications.Mediator.HolidaySearch.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.HolidaySearch.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Queries;
+using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Responses;
 
 namespace OTB.HolidaySearch.Tests.Applications.Mediator.HolidaySearch.Handlers
 {
@@ -41,23 +40,37 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.HolidaySearch.Handlers
          var actual = await _handler.Handle(holidayQuery, default);
 
          // assert
-         Assert.That(actual, Is.EqualTo(expected));
+         Assert.IsTrue(actual.GetType() == expected.GetType());
       }
 
       [Test]
       public async Task HandlerTest_InvokesGetFlightQueryMediator()
       {
          // arrange
+         var holidayQuery = new GetHolidayQuery();
+
+         _mediator.Setup(x => x.Send(It.IsAny<GetFlightQuery>(), default)).ReturnsAsync(It.IsAny<FlightResult>());
+
          // act
+         var actual = await _handler.Handle(holidayQuery, default);
+
          // assert
+         _mediator.Verify(x => x.Send(It.IsAny<GetFlightQuery>(), default), Times.Once);
       }
 
       [Test]
       public async Task HandlerTest_InvokesGetHotelQueryMediator()
       {
          // arrange
+         var holidayQuery = new GetHolidayQuery();
+
+         _mediator.Setup(x => x.Send(It.IsAny<GetHotelQuery>(), default)).ReturnsAsync(It.IsAny<HotelResult>());
+
          // act
+         var actual = await _handler.Handle(holidayQuery, default);
+
          // assert
+         _mediator.Verify(x => x.Send(It.IsAny<GetHotelQuery>(), default), Times.Once);
       }
    }
 }
