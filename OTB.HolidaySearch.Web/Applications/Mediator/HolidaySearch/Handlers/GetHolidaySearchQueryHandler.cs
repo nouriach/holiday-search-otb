@@ -34,12 +34,24 @@ namespace OTB.HolidaySearch.Web.Applications.Mediator.HolidaySearch.Handlers
 
          var hotel = await _mediator.Send(hotelQuery, cancellationToken);
 
-         var holiday = new HolidayResult
+         if(hotel == null && flight == null)
          {
-            // render with the result of the above searches
-         };
+            return new HolidayResult();
+         }
 
-         return holiday;
+         return new HolidayResult
+         {
+            DepartingFrom = flight.From,
+            TravellingTo = flight.To,
+            DepartureDate = flight.DepartureDate,
+            Airline = flight.Airline ?? "",
+            Price = flight.Price,
+            HotelName = hotel.Name ?? "",
+            LocalAirport = new List<string>(hotel.LocalAirports),
+            Duration = hotel.Nights,
+            PricePerNight = hotel.PricePerNight,
+            ArrivalDate = hotel.ArrivalDate,
+         };
       }
    }
 }

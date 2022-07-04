@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
+using OTB.HolidaySearch.Web.Applications.Mediator.HolidaySearch.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
 
 namespace OTB.HolidaySearch.Web.Controllers
@@ -17,10 +18,15 @@ namespace OTB.HolidaySearch.Web.Controllers
       }
 
       [HttpGet]
-      [Route("/get-result")]
-      public IActionResult GetResult()
+      [Route("/get-holiday")]
+      public async Task<IActionResult> GetHoliday([FromQuery] GetHolidayQuery query)
       {
-         return Ok("Test result..");
+         var holiday = await _mediator.Send(query, default);
+         if(holiday == null)
+         {
+            return BadRequest();
+         }
+         return Ok(holiday);
       }
 
       [HttpGet]
