@@ -28,6 +28,10 @@ namespace OTB.HolidaySearch.Web.Controllers
       public async Task<IActionResult> GetAllHotels([FromQuery] GetAllHotelsQuery query)
       {
          var hotels = await _mediator.Send(query, default);
+         if(hotels == null)
+         {
+            return BadRequest();  
+         }
          return Ok(hotels);
       }
 
@@ -36,6 +40,10 @@ namespace OTB.HolidaySearch.Web.Controllers
       public async Task<IActionResult> GetAllFlights([FromQuery] GetAllFlightsQuery query)
       {
          var flights = await _mediator.Send(query, default);
+         if (flights == null)
+         {
+            return BadRequest();
+         }
          return Ok(flights);
       }
    }
