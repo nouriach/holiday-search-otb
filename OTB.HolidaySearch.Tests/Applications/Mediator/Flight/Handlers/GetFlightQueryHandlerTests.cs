@@ -69,7 +69,20 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flight.Handlers
             TravellingTo = "YYY"
          };
 
-         _databaseService.Setup(x => x.GetAllFlights(It.IsAny<GetAllFlightsQuery>())).Returns(It.IsAny<FlightsResult>());
+         var flights = new FlightsResult
+         {
+            Flights = new List<FlightResult>
+            {
+               new FlightResult
+               {
+                  DepartureDate = query.DepartureDate,
+                  From = query.DepartingFrom,
+                  To = query.TravellingTo
+               }
+            }
+         };
+
+         _databaseService.Setup(x => x.GetAllFlights(It.IsAny<GetAllFlightsQuery>())).Returns(flights);
 
          // act
          var actual = await _handler.Handle(query, default);

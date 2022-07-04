@@ -47,7 +47,13 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.HolidaySearch.Handlers
       public async Task HandlerTest_InvokesGetFlightQueryMediator()
       {
          // arrange
-         var holidayQuery = new GetHolidayQuery();
+         var holidayQuery = new GetHolidayQuery
+         {
+            DepartingFrom = "XXX",
+            DepartureDate = DateTime.Now,
+            Duration = 10,
+            TravellingTo = "YYY"
+         };
 
          _mediator.Setup(x => x.Send(It.IsAny<GetFlightQuery>(), default)).ReturnsAsync(It.IsAny<FlightResult>());
 

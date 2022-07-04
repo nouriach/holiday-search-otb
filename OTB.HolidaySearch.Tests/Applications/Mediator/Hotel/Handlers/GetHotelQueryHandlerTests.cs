@@ -65,10 +65,25 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Hotel.Handlers
          // arrange
          var query = new GetHotelQuery
          {
-
+            ArrivalDate = DateTime.Now,
+            Duration = 10,
+            LocalAirport = "XXX"
          };
 
-         _databaseService.Setup(x => x.GetAllHotels(It.IsAny<GetAllHotelsQuery>())).Returns(It.IsAny<HotelsResult>());
+         var hotels = new HotelsResult
+         {
+            Hotels = new List<HotelResult>
+            {
+               new HotelResult
+               {
+                  ArrivalDate = query.ArrivalDate,
+                  Nights = query.Duration,
+                  LocalAirports = new List<string> { query.LocalAirport }
+               }
+            }
+         };
+
+         _databaseService.Setup(x => x.GetAllHotels(It.IsAny<GetAllHotelsQuery>())).Returns(hotels);
 
          // act
          var actual = await _handler.Handle(query, default);
