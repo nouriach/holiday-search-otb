@@ -6,6 +6,7 @@ using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Responses;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Responses;
+using OTB.HolidaySearch.Web.Domain.Constants;
 
 namespace OTB.HolidaySearch.Web.Infrastructure.Services
 {
@@ -42,14 +43,10 @@ namespace OTB.HolidaySearch.Web.Infrastructure.Services
             flights = JsonConvert.DeserializeObject<FlightsResult>(json);
          }
 
-         // filter by city
-         var cities = new Dictionary<string, List<string>>();
-         cities.Add(query.City, new List<string>() { "LGW", "LTN" });
-
          var matchingFlights = new FlightsResult();
 
          matchingFlights.Flights = flights.Flights.Where(
-            x => cities[query.City].Contains(x.From)
+            x => CityDictionary.Cities[query.City.ToLower()].Contains(x.From)
             && x.DepartureDate == query.DepartureDate
             && x.To == query.TravellingTo)
             .Select(x => x);
