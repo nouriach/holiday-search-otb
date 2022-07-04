@@ -40,5 +40,20 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Hotels.Handlers
          Assert.That(actual, Is.EqualTo(expected));
          Assert.IsNotNull(actual);
       }
+
+      [Test]
+      public async Task HandlerTest_InvokesDatabaseServiceOnce()
+      {
+         // arrange
+         var query = new GetAllHotelsQuery();
+         var expected = new HotelsResult { Hotels = new List<HotelResult>() };
+         _databaseService.Setup(x => x.GetAllHotels(query)).Returns(expected);
+
+         // act
+         var actual = await _handler.Handle(query, default);
+
+         // assert
+         _databaseService.Verify(x => x.GetAllHotels(query), Times.Once);
+      }
    }
 }

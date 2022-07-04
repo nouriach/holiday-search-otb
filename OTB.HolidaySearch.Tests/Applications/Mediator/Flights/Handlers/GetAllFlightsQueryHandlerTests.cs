@@ -35,5 +35,20 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flights.Handlers
          Assert.That(actual, Is.EqualTo(expected));
          Assert.IsNotNull(actual);
       }
+
+      [Test]
+      public async Task HandlerTest_InvokesDatabaseServiceOnce()
+      {
+         // arrange
+         var query = new GetAllFlightsQuery();
+         var expected = new FlightsResult { Flights = new List<FlightResult>() };
+         _databaseService.Setup(x => x.GetAllFlights(query)).Returns(expected);
+
+         // act
+         var actual = await _handler.Handle(query, default);
+
+         // assert
+         _databaseService.Verify(x => x.GetAllFlights(query), Times.Once);
+      }
    }
 }
