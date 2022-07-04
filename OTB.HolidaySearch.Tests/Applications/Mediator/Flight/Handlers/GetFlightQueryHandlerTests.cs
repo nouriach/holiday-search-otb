@@ -5,12 +5,6 @@ using OTB.HolidaySearch.Web.Applications.Mediator.Flight.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flight.Responses;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Responses;
-using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Handlers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flight.Handlers
 {
@@ -41,19 +35,14 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flight.Handlers
          {
             From = query.DepartingFrom,
             DepartureDate = query.DepartureDate,
-            To = query.TravellingTo
+            To = query.TravellingTo,
+            Airline = "Test Airline",
+            Price = 100
          };
 
          var allFlights = new FlightsResult
          {
-            Flights = new List<FlightResult> {
-               new FlightResult
-               {
-                  From = query.DepartingFrom,
-                  DepartureDate = query.DepartureDate,
-                  To = query.TravellingTo
-               }
-            }
+            Flights = new List<FlightResult> { expected, new FlightResult() }
          };
 
          _databaseService.Setup(x => x.GetAllFlights(It.IsAny<GetAllFlightsQuery>())).Returns(allFlights);  
@@ -65,6 +54,8 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flight.Handlers
          Assert.That(actual.DepartureDate == expected.DepartureDate);
          Assert.That(actual.To == expected.To);
          Assert.That(actual.From == expected.From);
+         Assert.That(actual.Airline == expected.Airline);
+         Assert.That(actual.Price == expected.Price);
       }
 
       [Test]

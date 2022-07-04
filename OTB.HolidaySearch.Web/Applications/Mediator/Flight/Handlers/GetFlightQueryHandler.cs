@@ -17,11 +17,29 @@ namespace OTB.HolidaySearch.Web.Applications.Mediator.Flight.Handlers
       public async Task<FlightResult> Handle(GetFlightQuery request, CancellationToken cancellationToken)
       {
          var flights = _service.GetAllFlights(new GetAllFlightsQuery());
-
+         
          var flight = new FlightResult();
 
-         return flight;
+         if (flights.Flights.Any())
+         {
+            var matchingFlight = flights.Flights.Where(
+               x => x.To == request.TravellingTo
+               && x.From == request.DepartingFrom
+               && x.DepartureDate == request.DepartureDate).FirstOrDefault();
 
+            MapMatchingResultToResponse(flight, matchingFlight);
+         }
+
+         return flight;
+      }
+
+      private static void MapMatchingResultToResponse(FlightResult flight, FlightResult? matchingFlight)
+      {
+         flight.DepartureDate = matchingFlight.DepartureDate;
+         flight.Airline = matchingFlight.Airline;
+         flight.Price = matchingFlight.Price;
+         flight.To = matchingFlight.To;
+         flight.From = matchingFlight.From;
       }
    }
 }
