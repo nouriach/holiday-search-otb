@@ -1,6 +1,8 @@
 using MediatR;
+using OTB.HolidaySearch.Web.Applications.Common.Interfaces;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
+using OTB.HolidaySearch.Web.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(GetAllFlightsQuery).Assembly);
 builder.Services.AddMediatR(typeof(GetAllHotelsQuery).Assembly);
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 var app = builder.Build();
 
