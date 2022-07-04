@@ -2,6 +2,7 @@
 using OTB.HolidaySearch.Web.Applications.Common.Interfaces;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Handlers;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Queries;
+using OTB.HolidaySearch.Web.Applications.Mediator.Hotel.Responses;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Responses;
 
@@ -21,11 +22,41 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Hotel.Handlers
       }
 
       [Test]
-      public void HandlerTest()
+      public async Task HandlerTest_ReturnsCorrectResponse()
       {
          // arrange
+         var query = new GetHotelQuery
+         {
+            ArrivalDate = DateTime.Now,
+            Duration = 12,
+            LocalAirport = "XXX"
+         };
+
+         var expected = new HotelResult
+         {
+            Name = "Test Hotel Name",
+            ArrivalDate = query.ArrivalDate,
+            LocalAirports = new List<string> { query.LocalAirport },
+            Nights = query.Duration,
+            PricePerNight = 150
+         };
+
+         var allHotels = new HotelsResult
+         {
+            Hotels = new List<HotelResult> { expected, new HotelResult() }
+         };
+
+         _databaseService.Setup(x => x.GetAllHotels(It.IsAny<GetAllHotelsQuery>())).Returns(allHotels);
+
          // act
+         var actual = await _handler.Handle(query, default);
+
          // assert
+         Assert.That(expected.Nights == actual.Nights);
+         Assert.That(expected.LocalAirports == actual.LocalAirports);
+         Assert.That(expected.PricePerNight == actual.PricePerNight);
+         Assert.That(expected.ArrivalDate == actual.ArrivalDate);
+         Assert.That(expected.Name == actual.Name);
       }
 
       [Test]
