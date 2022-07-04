@@ -37,13 +37,34 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flight.Handlers
             TravellingTo = "YYY"
          };
 
-         var expected = new FlightResult();
+         var expected = new FlightResult
+         {
+            From = query.DepartingFrom,
+            DepartureDate = query.DepartureDate,
+            To = query.TravellingTo
+         };
+
+         var allFlights = new FlightsResult
+         {
+            Flights = new List<FlightResult> {
+               new FlightResult
+               {
+                  From = query.DepartingFrom,
+                  DepartureDate = query.DepartureDate,
+                  To = query.TravellingTo
+               }
+            }
+         };
+
+         _databaseService.Setup(x => x.GetAllFlights(It.IsAny<GetAllFlightsQuery>())).Returns(allFlights);  
+
          // act
          var actual = await _handler.Handle(query, default);
 
          // assert
-         Assert.That(actual.GetType() == expected.GetType());
-         Assert.IsNotNull(actual);
+         Assert.That(actual.DepartureDate == expected.DepartureDate);
+         Assert.That(actual.To == expected.To);
+         Assert.That(actual.From == expected.From);
       }
 
       [Test]
