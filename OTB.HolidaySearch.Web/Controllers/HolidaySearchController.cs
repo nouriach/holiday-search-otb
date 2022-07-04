@@ -30,6 +30,18 @@ namespace OTB.HolidaySearch.Web.Controllers
       }
 
       [HttpGet]
+      [Route("/get-holiday-by-city")]
+      public async Task<IActionResult> GetHolidayByCity([FromQuery] GetHolidayByCityQuery query)
+      {
+         var holiday = await _mediator.Send(query, default);
+         if (holiday == null)
+         {
+            return BadRequest();
+         }
+         return Ok(holiday);
+      }
+
+      [HttpGet]
       [Route("/get-hotels")]
       public async Task<IActionResult> GetAllHotels([FromQuery] GetAllHotelsQuery query)
       {
