@@ -31,6 +31,7 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Hotels.Handlers
          // arrange
          var query = new GetAllHotelsQuery();
          var expected = new HotelsResult { Hotels = new List<HotelResult>() };
+         _databaseService.Setup(x => x.GetAllHotels(query)).Returns(expected);
 
          // act
          var actual = await _handler.Handle(query, default);

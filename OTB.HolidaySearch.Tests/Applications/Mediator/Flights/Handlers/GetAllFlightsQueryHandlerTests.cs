@@ -26,8 +26,7 @@ namespace OTB.HolidaySearch.Tests.Applications.Mediator.Flights.Handlers
          // arrange
          var query = new GetAllFlightsQuery();
          var expected = new FlightsResult { Flights = new List<FlightResult>() };
-
-
+         _databaseService.Setup(x => x.GetAllFlights(query)).Returns(expected);
 
          // act
          var actual = await _handler.Handle(query, default);
