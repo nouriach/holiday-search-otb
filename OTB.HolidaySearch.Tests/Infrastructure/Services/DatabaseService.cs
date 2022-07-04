@@ -1,4 +1,5 @@
 ﻿using OTB.HolidaySearch.Web.Applications.Common.Interfaces;
+using OTB.HolidaySearch.Web.Applications.Mediator.Flight.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Flights.Queries;
 using OTB.HolidaySearch.Web.Applications.Mediator.Hotels.Queries;
 using OTB.HolidaySearch.Web.Infrastructure.Services;
@@ -44,6 +45,25 @@ namespace OTB.HolidaySearch.Tests.Infrastructure.Services
 
          // assert
          Assert.IsNotNull(actual);
+      }
+
+      [Test]
+      public void DatabaseServiceTest_ReturnsAllFlights_BySpecificCityAndDestination_AndDate()
+      {
+         // arrange
+         var query = new GetFlightByCityQuery
+         {
+            City = "London",
+            DepartureDate = new DateTime(year: 2023, month: 06, day: 15),
+            TravellingTo = "PMI"
+         };
+
+         // act
+         var actual = _databaseService.GetAllFlightsByCity(query);
+
+         // assert
+         Assert.IsNotNull(actual);
+         Assert.IsTrue(actual.Flights.Count() == 2);
       }
    }
 }
