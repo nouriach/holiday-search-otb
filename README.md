@@ -35,3 +35,4 @@ The solution also follows TDD principles and the tests can be found in the `OTB.
 - Improved inheritance by storing repeated code in a `BaseRequestHandler`
 - Improve the display names for request parameters within tthe Swagger UI
 - Handle 'unhappy paths' with improved exception handling 
+- USe the `Flight` and `Hotel` DTOs in the `OTB.HolidaySearch.Web.Domain.Models` folder in `DatabaseService`, rather than the response models.
