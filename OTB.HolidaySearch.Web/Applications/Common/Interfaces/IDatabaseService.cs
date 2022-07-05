@@ -11,5 +11,6 @@ namespace OTB.HolidaySearch.Web.Applications.Common.Interfaces
       FlightsResult GetAllFlights(GetAllFlightsQuery query);
       HotelsResult GetAllHotels(GetAllHotelsQuery query);
       FlightsResult GetAllFlightsByCity(GetFlightByCityQuery query);
+      FlightsResult GetAllFlightsForSpecificLocation(GetFlightByAnyDepartureCityQuery query);
    }
 }

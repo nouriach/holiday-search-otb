@@ -15,7 +15,10 @@ namespace OTB.HolidaySearch.Web.Applications.Mediator.Flight.Handlers
       public async Task<FlightResult> Handle(GetFlightByCityQuery request, CancellationToken cancellationToken)
       {
          var flights = _service.GetAllFlightsByCity(request);
-
+         if (flights.Flights == null)
+         {
+            return new FlightResult(); ;
+         }
          var bestValueFlight = flights.Flights.OrderBy(x => x.Price).First();
 
          return bestValueFlight;
